@@ -66,42 +66,39 @@ document.querySelectorAll('.project-card').forEach(card => {
 });
 
 // Contact form submission handler
-document.querySelector('.contact-form').addEventListener('submit', function(e) {
+document.querySelector('.contact-form').addEventListener('submit', async function(e) {
     e.preventDefault();
 
-    // Get form data
-    const formData = new FormData(this);
-    const name = this.querySelector('input[type="text"]').value;
-    const email = this.querySelector('input[type="email"]').value;
-    const subject = this.querySelector('input[type="text"]:nth-of-type(2)').value;
-    const message = this.querySelector('textarea').value;
-
-    // Basic validation
-    if (!name || !email || !subject || !message) {
-        alert('Please fill in all fields');
-        return;
-    }
-
-    // Email validation
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-        alert('Please enter a valid email address');
-        return;
-    }
-
-    // Simulate form submission
     const submitButton = this.querySelector('button[type="submit"]');
     const originalText = submitButton.textContent;
 
-    submitButton.textContent = 'Sending...';
+    submitButton.textContent = 'Envoi en cours...';
     submitButton.disabled = true;
 
-    setTimeout(() => {
-        alert('Thank you for your message! I will get back to you soon.');
-        this.reset();
+    // Get form data
+    const formData = new FormData(this);
+
+    try {
+        const response = await fetch('send-email.php', {
+            method: 'POST',
+            body: formData
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+            alert('✅ ' + result.message);
+            this.reset();
+        } else {
+            alert('❌ ' + result.message);
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('❌ Une erreur est survenue lors de l\'envoi. Veuillez réessayer.');
+    } finally {
         submitButton.textContent = originalText;
         submitButton.disabled = false;
-    }, 1500);
+    }
 });
 
 // Add typing effect to hero title (optional enhancement)

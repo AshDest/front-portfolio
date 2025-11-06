@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alternative: EmailJS Setup</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 900px;
+            margin: 50px auto;
+            padding: 20px;
+            line-height: 1.6;
+            background: #f4f4f4;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 { color: #667eea; }
+        h2 { color: #764ba2; margin-top: 30px; }
+        code {
+            background: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+        }
+        pre {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        .step {
+            background: #f0f7ff;
+            padding: 15px;
+            margin: 15px 0;
+            border-left: 4px solid #667eea;
+            border-radius: 4px;
+        }
+        .warning {
+            background: #fff3cd;
+            padding: 15px;
+            margin: 15px 0;
+            border-left: 4px solid #ffc107;
+            border-radius: 4px;
+        }
+        .success {
+            background: #d4edda;
+            padding: 15px;
+            margin: 15px 0;
+            border-left: 4px solid #28a745;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📧 Alternative: Configuration EmailJS (Sans PHP)</h1>
+
+        <div class="success">
+            <strong>✅ Avantage:</strong> Pas besoin de serveur PHP! Fonctionne directement depuis votre site HTML statique.
+        </div>
+
+        <h2>Étape 1: Créer un compte EmailJS</h2>
+        <div class="step">
+            <ol>
+                <li>Allez sur <a href="https://www.emailjs.com/" target="_blank">https://www.emailjs.com/</a></li>
+                <li>Créez un compte gratuit (100 emails/mois gratuits)</li>
+                <li>Confirmez votre email</li>
+            </ol>
+        </div>
+
+        <h2>Étape 2: Configurer un Service Email</h2>
+        <div class="step">
+            <ol>
+                <li>Dans le dashboard EmailJS, allez dans <strong>Email Services</strong></li>
+                <li>Cliquez sur <strong>Add New Service</strong></li>
+                <li>Choisissez votre fournisseur (Gmail recommandé)</li>
+                <li>Connectez votre compte Gmail</li>
+                <li>Notez votre <strong>Service ID</strong></li>
+            </ol>
+        </div>
+
+        <h2>Étape 3: Créer un Template d'Email</h2>
+        <div class="step">
+            <ol>
+                <li>Allez dans <strong>Email Templates</strong></li>
+                <li>Cliquez sur <strong>Create New Template</strong></li>
+                <li>Configurez le template comme suit:</li>
+            </ol>
+            <pre>
+Subject: Nouveau message de {{from_name}}
+
+Content:
+De: {{from_name}}
+Email: {{from_email}}
+Sujet: {{subject}}
+
+Message:
+{{message}}
+            </pre>
+            <p>Notez votre <strong>Template ID</strong></p>
+        </div>
+
+        <h2>Étape 4: Obtenir votre Public Key</h2>
+        <div class="step">
+            <ol>
+                <li>Allez dans <strong>Account</strong> → <strong>General</strong></li>
+                <li>Trouvez votre <strong>Public Key</strong></li>
+                <li>Copiez-le</li>
+            </ol>
+        </div>
+
+        <h2>Étape 5: Modifier votre index.html</h2>
+        <div class="step">
+            <p>Ajoutez cette ligne dans la section <code>&lt;head&gt;</code> de votre index.html:</p>
+            <pre>&lt;script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"&gt;&lt;/script&gt;</pre>
+        </div>
+
+        <h2>Étape 6: Remplacer le Code JavaScript</h2>
+        <div class="step">
+            <p>Remplacez la partie "Form submission" dans votre script avec ce code:</p>
+            <pre>
+// Initialisez EmailJS avec votre Public Key
+emailjs.init("VOTRE_PUBLIC_KEY_ICI");
+
+// Form submission
+document.querySelector('.contact-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const submitButton = this.querySelector('button[type="submit"]');
+    const originalText = submitButton.textContent;
+
+    submitButton.textContent = 'Envoi en cours...';
+    submitButton.disabled = true;
+
+    // Les paramètres doivent correspondre à votre template
+    const templateParams = {
+        from_name: this.querySelector('[name="name"]').value,
+        from_email: this.querySelector('[name="email"]').value,
+        subject: this.querySelector('[name="subject"]').value,
+        message: this.querySelector('[name="message"]').value
+    };
+
+    emailjs.send('VOTRE_SERVICE_ID', 'VOTRE_TEMPLATE_ID', templateParams)
+        .then(function(response) {
+            alert('✅ Message envoyé avec succès!');
+            document.querySelector('.contact-form').reset();
+        }, function(error) {
+            console.error('Erreur:', error);
+            alert('❌ Erreur lors de l\'envoi. Veuillez réessayer.');
+        })
+        .finally(function() {
+            submitButton.textContent = originalText;
+            submitButton.disabled = false;
+        });
+});
+            </pre>
+            <div class="warning">
+                <strong>⚠️ Important:</strong> Remplacez:
+                <ul>
+                    <li><code>VOTRE_PUBLIC_KEY_ICI</code> par votre Public Key</li>
+                    <li><code>VOTRE_SERVICE_ID</code> par votre Service ID</li>
+                    <li><code>VOTRE_TEMPLATE_ID</code> par votre Template ID</li>
+                </ul>
+            </div>
+        </div>
+
+        <h2>Comparaison des Solutions</h2>
+        <table border="1" cellpadding="10" cellspacing="0" style="width: 100%; margin: 20px 0;">
+            <thead>
+                <tr style="background: #667eea; color: white;">
+                    <th>Critère</th>
+                    <th>PHP (send-email.php)</th>
+                    <th>EmailJS</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Serveur requis</td>
+                    <td>✅ Oui (PHP)</td>
+                    <td>❌ Non</td>
+                </tr>
+                <tr>
+                    <td>Configuration</td>
+                    <td>Moyenne</td>
+                    <td>Facile</td>
+                </tr>
+                <tr>
+                    <td>Gratuit</td>
+                    <td>✅ Oui</td>
+                    <td>✅ Oui (100 emails/mois)</td>
+                </tr>
+                <tr>
+                    <td>Hébergement</td>
+                    <td>Serveur PHP nécessaire</td>
+                    <td>N'importe où (GitHub Pages, Netlify, etc.)</td>
+                </tr>
+                <tr>
+                    <td>Sécurité</td>
+                    <td>Très bonne</td>
+                    <td>Bonne</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>🎯 Quelle Solution Choisir?</h2>
+        <div class="step">
+            <p><strong>Choisissez PHP si:</strong></p>
+            <ul>
+                <li>Vous avez déjà un hébergement web avec PHP</li>
+                <li>Vous voulez un contrôle total</li>
+                <li>Vous prévoyez beaucoup de messages (pas de limite)</li>
+            </ul>
+        </div>
+
+        <div class="step">
+            <p><strong>Choisissez EmailJS si:</strong></p>
+            <ul>
+                <li>Vous hébergez sur GitHub Pages, Netlify, ou similaire</li>
+                <li>Vous voulez une solution simple et rapide</li>
+                <li>Vous recevez moins de 100 messages/mois</li>
+            </ul>
+        </div>
+
+        <div class="success">
+            <strong>💡 Conseil:</strong> Commencez avec EmailJS pour la simplicité, puis passez à PHP si vous avez besoin de plus de contrôle ou de volume.
+        </div>
+    </div>
+</body>
+</html>
+
