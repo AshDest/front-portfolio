@@ -4,548 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Portfolio of Ash Destin, a Full-Stack Web Developer specializing in modern web applications, PHP, Laravel, WordPress, and more.">
-    <meta name="keywords" content="Web Developer, Full-Stack, PHP, Laravel , WordPress, JavaScript, HTML, CSS, Portfolio">
+    <meta name="keywords" content="Web Developer, Full-Stack, PHP, Laravel, WordPress, JavaScript, HTML, CSS, Portfolio">
     <meta name="author" content="Ash Destin">
     <link rel="icon" href="favicon.ico" type="image/x-icon">
-    <title>Portfolio - Web Developer</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Arial', sans-serif;
-            line-height: 1.6;
-            color: #333;
-            overflow-x: hidden;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        }
-
-        /* Navigation */
-        nav {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            z-index: 1000;
-            padding: 1rem 0;
-            transition: all 0.3s ease;
-        }
-
-        nav.scrolled {
-            background: rgba(255, 255, 255, 0.98);
-            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
-        }
-
-        .nav-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 2rem;
-        }
-
-        .logo {
-            font-size: 1.8rem;
-            font-weight: bold;
-            background: linear-gradient(45deg, #667eea, #764ba2);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .nav-links {
-            display: flex;
-            list-style: none;
-            gap: 2rem;
-        }
-
-        .nav-links a {
-            text-decoration: none;
-            color: #333;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            position: relative;
-        }
-
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: linear-gradient(45deg, #667eea, #764ba2);
-            transition: width 0.3s ease;
-        }
-
-        .nav-links a:hover::after {
-            width: 100%;
-        }
-
-        /* Hero Section */
-        .hero {
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            position: relative;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-        }
-
-        .hero-content {
-            max-width: 800px;
-            padding: 0 2rem;
-            animation: fadeInUp 1s ease;
-        }
-
-        .hero h1 {
-            font-size: 3.5rem;
-            margin-bottom: 1rem;
-            animation: fadeInUp 1s ease 0.2s both;
-        }
-
-        .hero p {
-            font-size: 1.3rem;
-            margin-bottom: 2rem;
-            animation: fadeInUp 1s ease 0.4s both;
-        }
-
-        .cta-button {
-            display: inline-block;
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
-            padding: 1rem 2rem;
-            text-decoration: none;
-            border-radius: 50px;
-            font-weight: bold;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            animation: fadeInUp 1s ease 0.6s both;
-        }
-
-        .cta-button:hover {
-            background: rgba(255, 255, 255, 0.3);
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-        }
-
-        .profile-image {
-            width: 200px;
-            height: 200px;
-            border-radius: 50%;
-            border: 5px solid rgba(255, 255, 255, 0.3);
-            margin: 0 auto 2rem;
-            animation: float 3s ease-in-out infinite;
-            background: url('ash.JPG');
-            background-size: cover;
-        }
-
-        /* Animated background elements */
-        .floating-shapes {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            z-index: 1;
-        }
-
-        .shape {
-            position: absolute;
-            opacity: 0.1;
-            animation: float 6s ease-in-out infinite;
-        }
-
-        .shape:nth-child(1) {
-            top: 20%;
-            left: 10%;
-            animation-delay: 0s;
-        }
-
-        .shape:nth-child(2) {
-            top: 60%;
-            right: 10%;
-            animation-delay: 2s;
-        }
-
-        .shape:nth-child(3) {
-            bottom: 20%;
-            left: 20%;
-            animation-delay: 4s;
-        }
-
-        /* Sections */
-        .section {
-            padding: 5rem 0;
-            position: relative;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 2rem;
-        }
-
-        .section-title {
-            text-align: center;
-            font-size: 2.5rem;
-            margin-bottom: 3rem;
-            position: relative;
-        }
-
-        .section-title::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 50px;
-            height: 3px;
-            background: linear-gradient(45deg, #667eea, #764ba2);
-        }
-
-        /* About Section */
-        .about {
-            background: white;
-            color: #333;
-        }
-
-        .about-content {
-            display: grid;
-            grid-template-columns: 1fr 2fr;
-            gap: 3rem;
-            align-items: center;
-        }
-
-        .about-text {
-            font-size: 1.1rem;
-            line-height: 1.8;
-        }
-
-        .about-image {
-            text-align: center;
-        }
-
-        .about-image svg {
-            max-width: 100%;
-            height: auto;
-            animation: pulse 2s ease-in-out infinite;
-        }
-
-        .links {
-            background: #fff;
-            color: #333;
-        }
-        .links-grid {
-            display: flex;
-            justify-content: center;
-            gap: 2rem;
-            flex-wrap: wrap;
-            margin-top: 2rem;
-        }
-        .link-card {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-decoration: none;
-            color: inherit;
-            background: linear-gradient(135deg, #667eea10 0%, #764ba210 100%);
-            padding: 1.5rem 1.2rem;
-            border-radius: 12px;
-            box-shadow: 0 2px 12px rgba(102,126,234,0.07);
-            transition: transform 0.2s, box-shadow 0.2s;
-            min-width: 120px;
-        }
-        .link-card:hover {
-            transform: translateY(-6px) scale(1.05);
-            box-shadow: 0 8px 24px rgba(102,126,234,0.15);
-            background: linear-gradient(135deg, #667eea20 0%, #764ba220 100%);
-        }
-        .link-card svg {
-            margin-bottom: 0.5rem;
-            color: #667eea;
-        }
-        .link-card span {
-            font-weight: 600;
-            font-size: 1rem;
-        }
-
-        /* Skills Section */
-        .skills {
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-        }
-
-        .skills-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
-        }
-
-        .skill-card {
-            background: white;
-            padding: 2rem;
-            border-radius: 15px;
-            text-align: center;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .skill-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 3px;
-            background: linear-gradient(45deg, #667eea, #764ba2);
-            transition: left 0.3s ease;
-        }
-
-        .skill-card:hover::before {
-            left: 0;
-        }
-
-        .skill-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
-        }
-
-        .skill-icon {
-            width: 60px;
-            height: 60px;
-            margin: 0 auto 1rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: linear-gradient(45deg, #667eea, #764ba2);
-            border-radius: 50%;
-            color: white;
-            font-size: 1.5rem;
-            animation: rotate 3s linear infinite;
-        }
-
-        .skill-card h3 {
-            margin-bottom: 0.5rem;
-            color: #333;
-        }
-
-        .skill-card p {
-            color: #666;
-            font-size: 0.9rem;
-        }
-
-        /* Projects Section */
-        .projects {
-            background: white;
-        }
-
-        .projects-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 2rem;
-        }
-
-        .project-card {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            border-radius: 15px;
-            overflow: hidden;
-            color: white;
-            transition: all 0.3s ease;
-            position: relative;
-        }
-
-        .project-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .project-card:hover::before {
-            opacity: 1;
-        }
-
-        .project-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 40px rgba(102, 126, 234, 0.3);
-        }
-
-        .project-content {
-            padding: 2rem;
-        }
-
-        .project-card h3 {
-            margin-bottom: 1rem;
-            font-size: 1.3rem;
-        }
-
-        .project-card p {
-            margin-bottom: 1rem;
-            opacity: 0.9;
-        }
-
-        .project-tech {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .tech-tag {
-            background: rgba(255, 255, 255, 0.2);
-            padding: 0.3rem 0.8rem;
-            border-radius: 20px;
-            font-size: 0.8rem;
-        }
-
-        /* Contact Section */
-        .contact {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            text-align: center;
-        }
-
-        .contact-content {
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        .contact-form {
-            display: grid;
-            gap: 1rem;
-            margin-top: 2rem;
-        }
-
-        .contact-form input,
-        .contact-form textarea {
-            padding: 1rem;
-            border: none;
-            border-radius: 10px;
-            font-size: 1rem;
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-            backdrop-filter: blur(10px);
-        }
-
-        .contact-form input::placeholder,
-        .contact-form textarea::placeholder {
-            color: rgba(255, 255, 255, 0.7);
-        }
-
-        .contact-form button {
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            padding: 1rem 2rem;
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: 1rem;
-            font-weight: bold;
-            transition: all 0.3s ease;
-        }
-
-        .contact-form button:hover {
-            background: rgba(255, 255, 255, 0.3);
-            transform: translateY(-2px);
-        }
-
-        /* Cloudflare Turnstile Widget */
-        .cf-turnstile {
-            margin: 1rem 0;
-            display: flex;
-            justify-content: center;
-        }
-
-        /* Animations */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes float {
-            0%, 100% {
-                transform: translateY(0px);
-            }
-            50% {
-                transform: translateY(-10px);
-            }
-        }
-
-        @keyframes pulse {
-            0%, 100% {
-                transform: scale(1);
-            }
-            50% {
-                transform: scale(1.05);
-            }
-        }
-
-        @keyframes rotate {
-            from {
-                transform: rotate(0deg);
-            }
-            to {
-                transform: rotate(360deg);
-            }
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 2.5rem;
-            }
-
-            .nav-links {
-                display: none;
-            }
-
-            .about-content {
-                grid-template-columns: 1fr;
-                text-align: center;
-            }
-
-            .skills-grid,
-            .projects-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        /* Scroll animations */
-        .fade-in {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.6s ease;
-        }
-
-        .fade-in.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
+    <title>Portfolio - Ash Destin | Web Developer</title>
     <!-- Cloudflare Turnstile -->
     <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </head>
 <body>
+
 <!-- Navigation -->
 <nav id="navbar">
     <div class="nav-container">
@@ -575,7 +43,7 @@
     </div>
     <div class="hero-content">
         <div class="profile-image"></div>
-        <h1>Full-Stack Web Developer</h1>
+        <h1>Full-Stack <span class="highlight">Web Developer</span></h1>
         <p>Passionate about creating modern and performant web applications</p>
         <a href="#contact" class="cta-button">Let's Work Together</a>
     </div>
@@ -604,30 +72,27 @@
         <h2 class="section-title fade-in">Find Me Online</h2>
         <div class="links-grid fade-in">
             <a href="https://github.com/AshDest" target="_blank" class="link-card" title="GitHub">
-                <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 .3a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2.2c-3.3.7-4-1.6-4-1.6-.5-1.2-1.2-1.5-1.2-1.5-1-.7.1-.7.1-.7 1.1.1 1.7 1.1 1.7 1.1 1 .1.7 1.7 1.7 2.1.2-.7.4-1.1.7-1.4-2.7-.3-5.5-1.3-5.5-5.7 0-1.3.5-2.3 1.2-3.2-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.3 1.2a11.3 11.3 0 0 1 6 0c2.3-1.5 3.3-1.2 3.3-1.2.6 1.6.2 2.8.1 3.1.7.9 1.2 1.9 1.2 3.2 0 4.4-2.8 5.4-5.5 5.7.4.3.8 1 .8 2v3c0 .3.2.7.8.6A12 12 0 0 0 12 .3"></path></svg>
+                <svg width="32" height="32" fill="currentColor" viewBox="0 0 24 24"><path d="M12 .3a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2.2c-3.3.7-4-1.6-4-1.6-.5-1.2-1.2-1.5-1.2-1.5-1-.7.1-.7.1-.7 1.1.1 1.7 1.1 1.7 1.1 1 .1.7 1.7 1.7 2.1.2-.7.4-1.1.7-1.4-2.7-.3-5.5-1.3-5.5-5.7 0-1.3.5-2.3 1.2-3.2-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.3 1.2a11.3 11.3 0 0 1 6 0c2.3-1.5 3.3-1.2 3.3-1.2.6 1.6.2 2.8.1 3.1.7.9 1.2 1.9 1.2 3.2 0 4.4-2.8 5.4-5.5 5.7.4.3.8 1 .8 2v3c0 .3.2.7.8.6A12 12 0 0 0 12 .3"></path></svg>
                 <span>GitHub</span>
             </a>
             <a href="https://www.linkedin.com/in/destin-ashuza-b826ab185/" target="_blank" class="link-card" title="LinkedIn">
-                <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.8 0-5 2.2-5 5v14c0 2.8 2.2 5 5 5h14c2.8 0 5-2.2 5-5v-14c0-2.8-2.2-5-5-5zm-11 19h-3v-9h3v9zm-1.5-10.3c-1 0-1.7-.8-1.7-1.7s.7-1.7 1.7-1.7c1 0 1.7.8 1.7 1.7s-.7 1.7-1.7 1.7zm15.5 10.3h-3v-4.5c0-1.1 0-2.5-1.5-2.5s-1.7 1.2-1.7 2.4v4.6h-3v-9h2.9v1.2h.1c.4-.7 1.3-1.5 2.7-1.5 2.9 0 3.4 1.9 3.4 4.3v5z"/></svg>
+                <svg width="32" height="32" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.8 0-5 2.2-5 5v14c0 2.8 2.2 5 5 5h14c2.8 0 5-2.2 5-5v-14c0-2.8-2.2-5-5-5zm-11 19h-3v-9h3v9zm-1.5-10.3c-1 0-1.7-.8-1.7-1.7s.7-1.7 1.7-1.7c1 0 1.7.8 1.7 1.7s-.7 1.7-1.7 1.7zm15.5 10.3h-3v-4.5c0-1.1 0-2.5-1.5-2.5s-1.7 1.2-1.7 2.4v4.6h-3v-9h2.9v1.2h.1c.4-.7 1.3-1.5 2.7-1.5 2.9 0 3.4 1.9 3.4 4.3v5z"/></svg>
                 <span>LinkedIn</span>
             </a>
             <a href="https://stackoverflow.com/users/19606779/ashuza-maheshe" target="_blank" class="link-card" title="Stack Overflow">
-                <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M17.5 21.5v-6h2v8h-17v-8h2v6h13zm-10-2h7v-2h-7v2zm8.2-3.2l-7.2-1.5.4-2 7.2 1.5-.4 2zm1.2-3.2l-6.2-3.2 1-1.7 6.2 3.2-1 1.7zm2.1-3.1l-4.7-5.7 1.6-1.3 4.7 5.7-1.6 1.3z"/></svg>
+                <svg width="32" height="32" fill="currentColor" viewBox="0 0 24 24"><path d="M17.5 21.5v-6h2v8h-17v-8h2v6h13zm-10-2h7v-2h-7v2zm8.2-3.2l-7.2-1.5.4-2 7.2 1.5-.4 2zm1.2-3.2l-6.2-3.2 1-1.7 6.2 3.2-1 1.7zm2.1-3.1l-4.7-5.7 1.6-1.3 4.7 5.7-1.6 1.3z"/></svg>
                 <span>Stack Overflow</span>
             </a>
-<!--            add X account-->
             <a href="https://x.com/AshDestin" target="_blank" class="link-card" title="X (Twitter)">
-                <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M23.954 4.569c-.885.389-1.83.654-2.825.775 1.014-.611 1.794-1.574 2.163-2.723-.951.555-2.005.959-3.127 1.184-.896-.959-2.178-1.559-3.594-1.559-2.717 0-4.917 2.201-4.917 4.917 0 .385.045.762.127 1.124-4.084-.205-7.702-2.165-10.141-5.144-.424.724-.666 1.564-.666 2.465 0 1.703.87 3.198 2.188 4.074-.807-.026-1.566-.248-2.228-.616v0c0 .021 0 .042 0 .064 0 2.377 1.688 4.356 3.926 4.804-.411.111-.844.171-1.29.171-.316 0-.623-.031-.923-.086a4.925 4.925 0 0 0 4.604 3.417c-3.188 2.494-7.207 3.98-11.552 3.98-.75 0-1.493-.044-2.213-.128a16.935 16.935 0 0 0 9.188 2.688c11 .001 17-9 .017-17z"/></svg>
+                <svg width="32" height="32" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
                 <span>X (Twitter)</span>
             </a>
-<!--            add gitlab account-->
             <a href="https://gitlab.com/ashuzamaheshe4" target="_blank" class="link-card" title="GitLab">
-                <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0l-3.5 7.5-7.5 3.5 3.5 7.5 7.5 3.5 7.5-3.5 3.5-7.5-7.5-3.5-3.5-7.5zm0 2l2.1 4.6h4.9l-4 1.9-1.9-4.9zm-2.1 4.6l1.9 4.9-4 1.9h-4.9l2.1-4.6h4zm8 0l2.1 4.6h-4l1.9-4.9zm-10 .6l-.6 1h-.8l-.6-1h2zm11 .6l-.6 1h-.8l-.6-1h2z"/></svg>
+                <svg width="32" height="32" fill="currentColor" viewBox="0 0 24 24"><path d="M22.65 14.39L12 22.13 1.35 14.39a.84.84 0 0 1-.3-.94l1.22-3.78 2.44-7.51A.42.42 0 0 1 4.82 2a.43.43 0 0 1 .58 0 .42.42 0 0 1 .11.18l2.44 7.49h8.1l2.44-7.51A.42.42 0 0 1 18.6 2a.43.43 0 0 1 .58 0 .42.42 0 0 1 .11.18l2.44 7.51L23 13.45a.84.84 0 0 1-.35.94z"/></svg>
                 <span>GitLab</span>
             </a>
-<!--            Upwork profile -->
             <a href="https://www.upwork.com/freelancers/~01d3f4c5e4b8c6e1b0" target="_blank" class="link-card" title="Upwork">
-                <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm3.707 16.293l-1.414 1.414-4.95-4.95 1.414-1.414 4.95 4.95zm-7.071-7.071l1.414-1.414 4.95 4.95-1.414 1.414-4.95-4.95z"/></svg>
+                <svg width="32" height="32" fill="currentColor" viewBox="0 0 24 24"><path d="M18.561 13.158c-1.102 0-2.135-.467-3.074-1.227l.228-1.076.008-.042c.207-1.143.849-3.06 2.839-3.06 1.492 0 2.703 1.212 2.703 2.703-.001 1.489-1.212 2.702-2.704 2.702zm0-8.14c-2.539 0-4.51 1.649-5.31 4.366-1.22-1.834-2.148-4.036-2.687-5.892H7.828v7.112c-.002 1.406-1.141 2.546-2.547 2.548-1.405-.002-2.543-1.143-2.545-2.548V3.492H0v7.112c0 2.914 2.37 5.303 5.281 5.303 2.913 0 5.283-2.389 5.283-5.303v-1.19c.529 1.107 1.182 2.229 1.974 3.221l-1.673 7.873h2.797l1.213-5.71c1.063.679 2.285 1.109 3.686 1.109 3 0 5.439-2.452 5.439-5.45 0-3-2.439-5.439-5.439-5.439z"/></svg>
                 <span>Upwork</span>
             </a>
         </div>
@@ -639,35 +104,107 @@
     <div class="container">
         <h2 class="section-title fade-in">My Skills</h2>
         <div class="skills-grid">
-            <div class="skill-card fade-in">
-                <div class="skill-icon">🐘</div>
-                <h3>PHP & Laravel</h3>
-                <p>Web application development with native PHP and Laravel framework + Livewire for dynamic interfaces</p>
-            </div>
+            <!-- Frontend -->
             <div class="skill-card fade-in">
                 <div class="skill-icon">🎨</div>
-                <h3>Front-End</h3>
-                <p>HTML5, CSS3, modern JavaScript for creating attractive and responsive user interfaces</p>
+                <h3>Frontend</h3>
+                <p>Building beautiful, responsive, and accessible user interfaces with modern web technologies</p>
+                <div class="skill-tags">
+                    <span class="skill-tag">HTML5</span>
+                    <span class="skill-tag">CSS3</span>
+                    <span class="skill-tag">JavaScript</span>
+                </div>
             </div>
+            <!-- Frontend Frameworks -->
             <div class="skill-card fade-in">
-                <div class="skill-icon">📱</div>
-                <h3>WordPress</h3>
-                <p>Custom website creation, bespoke themes and optimized WordPress plugins</p>
+                <div class="skill-icon">⚡</div>
+                <h3>Frontend Frameworks</h3>
+                <p>Modern frameworks and libraries for building dynamic, reactive web applications</p>
+                <div class="skill-tags">
+                    <span class="skill-tag">Vue.js</span>
+                    <span class="skill-tag">Blade</span>
+                    <span class="skill-tag">Livewire</span>
+                </div>
             </div>
+            <!-- Backend -->
+            <div class="skill-card fade-in">
+                <div class="skill-icon highlight">🐘</div>
+                <h3>Backend</h3>
+                <p>Server-side languages for robust applications. Most proficient and productive in <strong>PHP</strong></p>
+                <div class="skill-tags">
+                    <span class="skill-tag primary">PHP</span>
+                    <span class="skill-tag">Java</span>
+                    <span class="skill-tag">Python</span>
+                </div>
+            </div>
+            <!-- Backend Framework -->
+            <div class="skill-card fade-in">
+                <div class="skill-icon highlight">🚀</div>
+                <h3>Backend Framework</h3>
+                <p>Elegant and powerful PHP framework for modern, scalable web applications</p>
+                <div class="skill-tags">
+                    <span class="skill-tag primary">Laravel</span>
+                </div>
+            </div>
+            <!-- APIs -->
+            <div class="skill-card fade-in">
+                <div class="skill-icon">🔗</div>
+                <h3>APIs</h3>
+                <p>Designing and consuming RESTful and GraphQL APIs for seamless data exchange</p>
+                <div class="skill-tags">
+                    <span class="skill-tag">REST API</span>
+                    <span class="skill-tag">GraphQL</span>
+                </div>
+            </div>
+            <!-- DevOps & Tools -->
             <div class="skill-card fade-in">
                 <div class="skill-icon">⚙️</div>
-                <h3>DevOps</h3>
-                <p>Deployment, CI/CD, containerization and infrastructure management to optimize performance</p>
+                <h3>DevOps & Tools</h3>
+                <p>Version control, CI/CD pipelines, containerization and automated deployment</p>
+                <div class="skill-tags">
+                    <span class="skill-tag">Git</span>
+                    <span class="skill-tag">GitHub</span>
+                    <span class="skill-tag">GitLab</span>
+                    <span class="skill-tag">Docker</span>
+                    <span class="skill-tag">CI/CD</span>
+                    <span class="skill-tag">Kubernetes</span>
+                    <span class="skill-tag">Jenkins</span>
+                </div>
             </div>
+            <!-- Web Servers -->
             <div class="skill-card fade-in">
-                <div class="skill-icon">🗄️</div>
-                <h3>Databases</h3>
-                <p>SQL, MongoDB, Firebase - Design and optimization of relational and NoSQL databases</p>
+                <div class="skill-icon">🌐</div>
+                <h3>Web Servers</h3>
+                <p>Configuration and optimization of web servers for high performance and reliability</p>
+                <div class="skill-tags">
+                    <span class="skill-tag">Apache</span>
+                    <span class="skill-tag">NGINX</span>
+                    <span class="skill-tag">Tomcat</span>
+                </div>
             </div>
+            <!-- Operating Systems -->
             <div class="skill-card fade-in">
                 <div class="skill-icon">💻</div>
-                <h3>C# & .NET</h3>
-                <p>Desktop and web application development with the Microsoft .NET ecosystem</p>
+                <h3>Operating Systems</h3>
+                <p>Comfortable working across multiple operating systems for development and deployment</p>
+                <div class="skill-tags">
+                    <span class="skill-tag">Windows</span>
+                    <span class="skill-tag">Linux</span>
+                    <span class="skill-tag">Ubuntu</span>
+                    <span class="skill-tag">Debian</span>
+                </div>
+            </div>
+            <!-- Cloud Hosting -->
+            <div class="skill-card fade-in">
+                <div class="skill-icon">☁️</div>
+                <h3>Cloud Hosting</h3>
+                <p>Deploying and managing applications on leading cloud platforms</p>
+                <div class="skill-tags">
+                    <span class="skill-tag">AWS</span>
+                    <span class="skill-tag">DigitalOcean</span>
+                    <span class="skill-tag">Heroku</span>
+                    <span class="skill-tag">Vercel</span>
+                </div>
             </div>
         </div>
     </div>
@@ -694,9 +231,7 @@
             <div class="project-card fade-in">
                 <div class="project-content">
                     <h3>Laravel Website</h3>
-                    <p>
-                        A project I worked on for a client, featuring a modern design, user authentication, and a custom admin panel for content management.
-                    </p>
+                    <p>A project I worked on for a client, featuring a modern design, user authentication, and a custom admin panel for content management.</p>
                     <div class="project-tech">
                         <span class="tech-tag">Laravel</span>
                         <span class="tech-tag">Livewire</span>
@@ -707,10 +242,8 @@
             </div>
             <div class="project-card fade-in">
                 <div class="project-content">
-                    <h3>Laravel Website and administration</h3>
-                    <p>
-                        Laravel site with custom admin panel, auth, roles, and responsive design. I handled secure back-end; Philemon led front-end. Showcases my technical skills and effective collaboration.
-                    </p>
+                    <h3>Laravel Website and Administration</h3>
+                    <p>Laravel site with custom admin panel, auth, roles, and responsive design. I handled secure back-end; Philemon led front-end. Showcases my technical skills and effective collaboration.</p>
                     <div class="project-tech">
                         <span class="tech-tag">Laravel</span>
                         <span class="tech-tag">Livewire</span>
@@ -780,114 +313,7 @@
     </div>
 </section>
 
-<script>
-    // Smooth scrolling
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            document.querySelector(this.getAttribute('href')).scrollIntoView({
-                behavior: 'smooth'
-            });
-        });
-    });
-
-    // Navbar scroll effect
-    window.addEventListener('scroll', () => {
-        const navbar = document.getElementById('navbar');
-        if (window.scrollY > 100) {
-            navbar.classList.add('scrolled');
-        } else {
-            navbar.classList.remove('scrolled');
-        }
-    });
-
-    // Fade in animation on scroll
-    const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -100px 0px'
-    };
-
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('visible');
-            }
-        });
-    }, observerOptions);
-
-    document.querySelectorAll('.fade-in').forEach(el => {
-        observer.observe(el);
-    });
-
-    // Variable globale pour stocker le token Turnstile
-    let turnstileToken = null;
-
-    // Callback Turnstile
-    window.onTurnstileSuccess = function(token) {
-        turnstileToken = token;
-    };
-
-    // Form submission
-    document.querySelector('.contact-form').addEventListener('submit', async (e) => {
-        e.preventDefault();
-
-        const form = e.target;
-        const submitButton = form.querySelector('button[type="submit"]');
-        const originalButtonText = submitButton.textContent;
-
-        // Vérifier que Turnstile est validé
-        if (!turnstileToken) {
-            alert('⚠️ Veuillez valider le captcha avant de soumettre le formulaire.');
-            return;
-        }
-
-        // Disable button and show loading state
-        submitButton.disabled = true;
-        submitButton.textContent = 'Envoi en cours...';
-
-        try {
-            // Get form data
-            const formData = new FormData(form);
-            formData.append('cf_turnstile_token', turnstileToken);
-
-            const response = await fetch('send-email.php', {
-                method: 'POST',
-                body: formData
-            });
-
-            const result = await response.json();
-
-            if (result.success) {
-                alert('✅ ' + result.message);
-                form.reset();
-                turnstileToken = null; // Reset token
-                // Reset Turnstile widget
-                if (typeof turnstile !== 'undefined') {
-                    turnstile.reset();
-                }
-            } else {
-                alert('❌ ' + result.message);
-            }
-        } catch (error) {
-            console.error('Error:', error);
-            alert('❌ Une erreur est survenue. Veuillez réessayer plus tard.');
-        } finally {
-            // Re-enable button
-            submitButton.disabled = false;
-            submitButton.textContent = originalButtonText;
-        }
-    });
-
-    // Add some interactive hover effects
-    document.querySelectorAll('.skill-card').forEach(card => {
-        card.addEventListener('mouseenter', () => {
-            card.style.transform = 'translateY(-10px) scale(1.02)';
-        });
-
-        card.addEventListener('mouseleave', () => {
-            card.style.transform = 'translateY(0) scale(1)';
-        });
-    });
-</script>
+<script src="script.js"></script>
 </body>
 </html>
+

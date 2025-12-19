@@ -1,14 +1,10 @@
-// Smooth scrolling for navigation links
+// Smooth scrolling
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
         e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-            target.scrollIntoView({
-                behavior: 'smooth',
-                block: 'start'
-            });
-        }
+        document.querySelector(this.getAttribute('href')).scrollIntoView({
+            behavior: 'smooth'
+        });
     });
 });
 
@@ -22,10 +18,10 @@ window.addEventListener('scroll', () => {
     }
 });
 
-// Intersection Observer for fade-in animations
+// Fade in animation on scroll
 const observerOptions = {
     threshold: 0.1,
-    rootMargin: '0px 0px -50px 0px'
+    rootMargin: '0px 0px -100px 0px'
 };
 
 const observer = new IntersectionObserver((entries) => {
@@ -36,33 +32,8 @@ const observer = new IntersectionObserver((entries) => {
     });
 }, observerOptions);
 
-// Observe all fade-in elements
 document.querySelectorAll('.fade-in').forEach(el => {
     observer.observe(el);
-});
-
-// Enhanced skill card hover effects
-document.querySelectorAll('.skill-card').forEach(card => {
-    card.addEventListener('mouseenter', () => {
-        card.style.transform = 'translateY(-10px) scale(1.02)';
-        card.style.boxShadow = '0 25px 50px rgba(0,0,0,0.2)';
-    });
-
-    card.addEventListener('mouseleave', () => {
-        card.style.transform = 'translateY(0) scale(1)';
-        card.style.boxShadow = '0 10px 30px rgba(0,0,0,0.1)';
-    });
-});
-
-// Project card enhanced hover effects
-document.querySelectorAll('.project-card').forEach(card => {
-    card.addEventListener('mouseenter', () => {
-        card.style.transform = 'translateY(-8px) scale(1.02)';
-    });
-
-    card.addEventListener('mouseleave', () => {
-        card.style.transform = 'translateY(0) scale(1)';
-    });
 });
 
 // Variable globale pour stocker le token Turnstile
@@ -73,25 +44,27 @@ window.onTurnstileSuccess = function(token) {
     turnstileToken = token;
 };
 
-// Contact form submission handler
-document.querySelector('.contact-form').addEventListener('submit', async function(e) {
+// Form submission
+document.querySelector('.contact-form').addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    const submitButton = this.querySelector('button[type="submit"]');
-    const originalText = submitButton.textContent;
+    const form = e.target;
+    const submitButton = form.querySelector('button[type="submit"]');
+    const originalButtonText = submitButton.textContent;
 
     // Vérifier que Turnstile est validé
     if (!turnstileToken) {
-        alert('⚠️ Veuillez valider le captcha avant de soumettre le formulaire.');
+        alert('⚠️ Please validate the captcha before submitting the form.');
         return;
     }
 
-    submitButton.textContent = 'Envoi en cours...';
+    // Disable button and show loading state
     submitButton.disabled = true;
+    submitButton.textContent = 'Sending...';
 
     try {
         // Get form data
-        const formData = new FormData(this);
+        const formData = new FormData(form);
         formData.append('cf_turnstile_token', turnstileToken);
 
         const response = await fetch('send-email.php', {
@@ -103,7 +76,7 @@ document.querySelector('.contact-form').addEventListener('submit', async functio
 
         if (result.success) {
             alert('✅ ' + result.message);
-            this.reset();
+            form.reset();
             turnstileToken = null; // Reset token
             // Reset Turnstile widget
             if (typeof turnstile !== 'undefined') {
@@ -114,107 +87,22 @@ document.querySelector('.contact-form').addEventListener('submit', async functio
         }
     } catch (error) {
         console.error('Error:', error);
-        alert('❌ Une erreur est survenue lors de l\'envoi. Veuillez réessayer.');
+        alert('❌ An error occurred. Please try again later.');
     } finally {
-        submitButton.textContent = originalText;
+        // Re-enable button
         submitButton.disabled = false;
+        submitButton.textContent = originalButtonText;
     }
 });
 
-// Add typing effect to hero title (optional enhancement)
-function typeWriter(element, text, speed = 100) {
-    let i = 0;
-    element.innerHTML = '';
+// Add some interactive hover effects
+document.querySelectorAll('.skill-card').forEach(card => {
+    card.addEventListener('mouseenter', () => {
+        card.style.transform = 'translateY(-10px) scale(1.02)';
+    });
 
-    function type() {
-        if (i < text.length) {
-            element.innerHTML += text.charAt(i);
-            i++;
-            setTimeout(type, speed);
-        }
-    }
-    type();
-}
-
-// Parallax effect for floating shapes
-window.addEventListener('scroll', () => {
-    const scrolled = window.pageYOffset;
-    const shapes = document.querySelectorAll('.shape');
-
-    shapes.forEach((shape, index) => {
-        const rate = scrolled * -0.5;
-        shape.style.transform = `translateY(${rate * (index + 1) * 0.1}px)`;
+    card.addEventListener('mouseleave', () => {
+        card.style.transform = 'translateY(0) scale(1)';
     });
 });
 
-// Add smooth reveal animation for sections
-function revealSection(entries, observer) {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.style.opacity = '1';
-            entry.target.style.transform = 'translateY(0)';
-        }
-    });
-}
-
-// Performance optimization: Throttle scroll events
-function throttle(func, wait) {
-    let timeout;
-    return function executedFunction(...args) {
-        const later = () => {
-            clearTimeout(timeout);
-            func(...args);
-        };
-        clearTimeout(timeout);
-        timeout = setTimeout(later, wait);
-    };
-}
-
-// Apply throttling to scroll events
-const throttledScrollHandler = throttle(() => {
-    const navbar = document.getElementById('navbar');
-    if (window.scrollY > 100) {
-        navbar.classList.add('scrolled');
-    } else {
-        navbar.classList.remove('scrolled');
-    }
-}, 10);
-
-window.addEventListener('scroll', throttledScrollHandler);
-
-// Add loading animation
-window.addEventListener('load', () => {
-    document.body.classList.add('loaded');
-
-    // Trigger hero animations after load
-    const heroContent = document.querySelector('.hero-content');
-    if (heroContent) {
-        heroContent.style.opacity = '1';
-        heroContent.style.transform = 'translateY(0)';
-    }
-});
-
-// Mobile navigation toggle (if needed)
-function createMobileNav() {
-    const nav = document.querySelector('.nav-container');
-    const navLinks = document.querySelector('.nav-links');
-
-    // Create hamburger button for mobile
-    const hamburger = document.createElement('button');
-    hamburger.className = 'hamburger';
-    hamburger.innerHTML = '☰';
-    hamburger.style.display = 'none';
-    hamburger.style.background = 'none';
-    hamburger.style.border = 'none';
-    hamburger.style.fontSize = '1.5rem';
-    hamburger.style.cursor = 'pointer';
-
-    nav.appendChild(hamburger);
-
-    hamburger.addEventListener('click', () => {
-        navLinks.classList.toggle('active');
-    });
-}
-
-// Initialize mobile navigation
-createMobileNav();
