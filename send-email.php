@@ -6,7 +6,10 @@ header('Access-Control-Allow-Methods: POST');
 header('Access-Control-Allow-Headers: Content-Type');
 
 // Votre adresse email où vous recevrez les messages
-$to_email = "votre-email@example.com"; // CHANGEZ CETTE ADRESSE PAR LA VÔTRE
+$to_email = "ashuzamaheshe4@gmail.com";
+
+// Configuration Cloudflare Turnstile
+$turnstile_secret_key = "VOTRE_SECRET_KEY_ICI"; // À remplacer par votre Secret Key de Cloudflare
 
 // Vérifier que c'est une requête POST
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -20,6 +23,46 @@ $name = isset($_POST['name']) ? trim($_POST['name']) : '';
 $email = isset($_POST['email']) ? trim($_POST['email']) : '';
 $subject = isset($_POST['subject']) ? trim($_POST['subject']) : '';
 $message = isset($_POST['message']) ? trim($_POST['message']) : '';
+$turnstile_token = isset($_POST['cf_turnstile_token']) ? $_POST['cf_turnstile_token'] : '';
+
+// Vérifier le token Cloudflare Turnstile
+if (empty($turnstile_token)) {
+    http_response_code(400);
+    echo json_encode(['success' => false, 'message' => 'Token Turnstile manquant']);
+    exit;
+}
+
+// Vérifier le token auprès de Cloudflare
+$turnstile_url = 'https://challenges.cloudflare.com/turnstile/v0/siteverify';
+$turnstile_data = [
+    'secret' => $turnstile_secret_key,
+    'response' => $turnstile_token,
+    'remoteip' => $_SERVER['REMOTE_ADDR']
+];
+
+$turnstile_options = [
+    'http' => [
+        'header' => "Content-type: application/x-www-form-urlencoded\r\n",
+        'method' => 'POST',
+        'content' => http_build_query($turnstile_data)
+    ]
+];
+
+$turnstile_context = stream_context_create($turnstile_options);
+$turnstile_result = file_get_contents($turnstile_url, false, $turnstile_context);
+$turnstile_response = json_decode($turnstile_result);
+
+// Vérifier la réponse de Turnstile
+if (!$turnstile_response->success) {
+    http_response_code(403);
+    $error_codes = isset($turnstile_response->{'error-codes'}) ? implode(', ', $turnstile_response->{'error-codes'}) : 'unknown';
+    echo json_encode([
+        'success' => false,
+        'message' => 'Vérification Turnstile échouée. Vous pourriez être un bot.',
+        'error_codes' => $error_codes
+    ]);
+    exit;
+}
 
 // Validation
 $errors = [];

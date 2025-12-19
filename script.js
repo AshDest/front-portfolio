@@ -65,6 +65,14 @@ document.querySelectorAll('.project-card').forEach(card => {
     });
 });
 
+// Variable globale pour stocker le token Turnstile
+let turnstileToken = null;
+
+// Callback Turnstile
+window.onTurnstileSuccess = function(token) {
+    turnstileToken = token;
+};
+
 // Contact form submission handler
 document.querySelector('.contact-form').addEventListener('submit', async function(e) {
     e.preventDefault();
@@ -72,13 +80,20 @@ document.querySelector('.contact-form').addEventListener('submit', async functio
     const submitButton = this.querySelector('button[type="submit"]');
     const originalText = submitButton.textContent;
 
+    // Vérifier que Turnstile est validé
+    if (!turnstileToken) {
+        alert('⚠️ Veuillez valider le captcha avant de soumettre le formulaire.');
+        return;
+    }
+
     submitButton.textContent = 'Envoi en cours...';
     submitButton.disabled = true;
 
-    // Get form data
-    const formData = new FormData(this);
-
     try {
+        // Get form data
+        const formData = new FormData(this);
+        formData.append('cf_turnstile_token', turnstileToken);
+
         const response = await fetch('send-email.php', {
             method: 'POST',
             body: formData
@@ -89,6 +104,11 @@ document.querySelector('.contact-form').addEventListener('submit', async functio
         if (result.success) {
             alert('✅ ' + result.message);
             this.reset();
+            turnstileToken = null; // Reset token
+            // Reset Turnstile widget
+            if (typeof turnstile !== 'undefined') {
+                turnstile.reset();
+            }
         } else {
             alert('❌ ' + result.message);
         }

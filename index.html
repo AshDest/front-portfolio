@@ -463,6 +463,13 @@
             transform: translateY(-2px);
         }
 
+        /* Cloudflare Turnstile Widget */
+        .cf-turnstile {
+            margin: 1rem 0;
+            display: flex;
+            justify-content: center;
+        }
+
         /* Animations */
         @keyframes fadeInUp {
             from {
@@ -535,6 +542,8 @@
             transform: translateY(0);
         }
     </style>
+    <!-- Cloudflare Turnstile -->
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </head>
 <body>
 <!-- Navigation -->
@@ -616,7 +625,11 @@
                 <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0l-3.5 7.5-7.5 3.5 3.5 7.5 7.5 3.5 7.5-3.5 3.5-7.5-7.5-3.5-3.5-7.5zm0 2l2.1 4.6h4.9l-4 1.9-1.9-4.9zm-2.1 4.6l1.9 4.9-4 1.9h-4.9l2.1-4.6h4zm8 0l2.1 4.6h-4l1.9-4.9zm-10 .6l-.6 1h-.8l-.6-1h2zm11 .6l-.6 1h-.8l-.6-1h2z"/></svg>
                 <span>GitLab</span>
             </a>
-            <!-- Add more links as needed -->
+<!--            Upwork profile -->
+            <a href="https://www.upwork.com/freelancers/~01d3f4c5e4b8c6e1b0" target="_blank" class="link-card" title="Upwork">
+                <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm3.707 16.293l-1.414 1.414-4.95-4.95 1.414-1.414 4.95 4.95zm-7.071-7.071l1.414-1.414 4.95 4.95-1.414 1.414-4.95-4.95z"/></svg>
+                <span>Upwork</span>
+            </a>
         </div>
     </div>
 </section>
@@ -757,6 +770,10 @@
                 <input type="email" name="email" placeholder="Your email" required>
                 <input type="text" name="subject" placeholder="Subject" required>
                 <textarea name="message" placeholder="Your message" rows="5" required></textarea>
+
+                <!-- Cloudflare Turnstile Widget -->
+                <div class="cf-turnstile" data-sitekey="VOTRE_SITE_KEY_ICI" data-callback="onTurnstileSuccess"></div>
+
                 <button type="submit">Send Message</button>
             </form>
         </div>
@@ -802,6 +819,14 @@
         observer.observe(el);
     });
 
+    // Variable globale pour stocker le token Turnstile
+    let turnstileToken = null;
+
+    // Callback Turnstile
+    window.onTurnstileSuccess = function(token) {
+        turnstileToken = token;
+    };
+
     // Form submission
     document.querySelector('.contact-form').addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -810,14 +835,21 @@
         const submitButton = form.querySelector('button[type="submit"]');
         const originalButtonText = submitButton.textContent;
 
+        // Vérifier que Turnstile est validé
+        if (!turnstileToken) {
+            alert('⚠️ Veuillez valider le captcha avant de soumettre le formulaire.');
+            return;
+        }
+
         // Disable button and show loading state
         submitButton.disabled = true;
         submitButton.textContent = 'Envoi en cours...';
 
-        // Get form data
-        const formData = new FormData(form);
-
         try {
+            // Get form data
+            const formData = new FormData(form);
+            formData.append('cf_turnstile_token', turnstileToken);
+
             const response = await fetch('send-email.php', {
                 method: 'POST',
                 body: formData
@@ -828,6 +860,11 @@
             if (result.success) {
                 alert('✅ ' + result.message);
                 form.reset();
+                turnstileToken = null; // Reset token
+                // Reset Turnstile widget
+                if (typeof turnstile !== 'undefined') {
+                    turnstile.reset();
+                }
             } else {
                 alert('❌ ' + result.message);
             }

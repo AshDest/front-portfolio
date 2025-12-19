@@ -78,6 +78,14 @@ document.querySelectorAll('.project-card').forEach(card => {
     });
 });
 
+// Variable globale pour stocker le token Turnstile
+let turnstileToken = null;
+
+// Callback Turnstile
+window.onTurnstileSuccess = function(token) {
+    turnstileToken = token;
+};
+
 // Contact form submission handler with EmailJS
 document.querySelector('.contact-form').addEventListener('submit', function(e) {
     e.preventDefault();
@@ -89,6 +97,12 @@ document.querySelector('.contact-form').addEventListener('submit', function(e) {
     if (EMAILJS_CONFIG.PUBLIC_KEY === 'VOTRE_PUBLIC_KEY_ICI') {
         alert('⚠️ Veuillez configurer EmailJS dans script-emailjs.js\n\n' +
               'Voir le fichier emailjs-setup.html pour les instructions détaillées.');
+        return;
+    }
+
+    // Vérifier que Turnstile est validé
+    if (!turnstileToken) {
+        alert('⚠️ Veuillez valider le captcha avant de soumettre le formulaire.');
         return;
     }
 
@@ -114,6 +128,11 @@ document.querySelector('.contact-form').addEventListener('submit', function(e) {
         console.log('SUCCESS!', response.status, response.text);
         alert('✅ Message envoyé avec succès!\n\nJe vous répondrai dans les plus brefs délais.');
         this.reset();
+        turnstileToken = null; // Reset token
+        // Reset Turnstile widget
+        if (typeof turnstile !== 'undefined') {
+            turnstile.reset();
+        }
     })
     .catch((error) => {
         console.error('FAILED...', error);
